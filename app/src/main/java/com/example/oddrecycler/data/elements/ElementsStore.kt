@@ -37,7 +37,10 @@ class ElementsStore @Inject constructor(
         while (true) {
             mutex.withLock {
                 _elements.emit(data.apply {
-                    add((0..size).random(), ElementGenerator.next())
+                    add(
+                        (0..size).random(),
+                        element = ElementStorage.get() ?: ElementGenerator.next()
+                    )
                     Log.d("ELEMENTS_STORE", "New data: $this")
                 })
             }
@@ -53,6 +56,7 @@ class ElementsStore @Inject constructor(
                     element.id == id
                 }.let { index ->
                     apply {
+                        ElementStorage.put(elementAt(index))
                         removeAt(index)
                         _elements.emit(this)
                     }
