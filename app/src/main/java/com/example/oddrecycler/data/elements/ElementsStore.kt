@@ -21,7 +21,7 @@ class ElementsStore @Inject constructor(
     private val data = mutableListOf<Element>()
     private val mutex = Mutex()
 
-    private val _elements = MutableSharedFlow<List<Element>>(replay = 1)
+    private val _elements = MutableSharedFlow<List<Element>>()
 
     val elements: SharedFlow<List<Element>>
         get() = _elements
