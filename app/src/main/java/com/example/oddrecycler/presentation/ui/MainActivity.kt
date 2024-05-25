@@ -58,8 +58,11 @@ class MainActivity : AppCompatActivity() {
                     it.last()
             }
         }
-        val recyclerLayoutManager = GridLayoutManager(this@MainActivity, 3)
-        binding?.recycler?.run {
+        val recyclerLayoutManager = GridLayoutManager(
+            this@MainActivity,
+            resources.getInteger(R.integer.elements_columns)
+        )
+        binding?.recycler?.apply {
             adapter = recyclerAdapter
             layoutManager = recyclerLayoutManager
             addItemDecoration(RecyclerItemDecoration(bottomOffset = 16, rightOffset = 8, leftOffset = 8))
