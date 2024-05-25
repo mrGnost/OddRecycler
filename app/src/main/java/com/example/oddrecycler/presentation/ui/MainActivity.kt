@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.oddrecycler.data.entity.Element
 import com.example.oddrecycler.presentation.viewmodel.ElementsViewModel
 import com.example.oddrecycler.R
@@ -17,6 +18,7 @@ import com.example.oddrecycler.presentation.adapter.RecyclerAdapter
 import com.example.oddrecycler.presentation.util.RecyclerAnimator
 import com.example.oddrecycler.presentation.util.RecyclerItemDecoration
 import com.example.oddrecycler.databinding.ActivityMainBinding
+import com.example.oddrecycler.util.Dispatcher
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,11 +29,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
-    private var recyclerAdapter: RecyclerAdapter? = null
     private val viewModel: ElementsViewModel by viewModels()
     @Inject lateinit var scope: CoroutineScope
+    @Inject lateinit var dispatcher: Dispatcher
+    @Inject lateinit var recyclerLayoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("MAIN_ACTIVITY", "Activity created")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         findViewById<RecyclerView>(R.id.recycler)
@@ -43,57 +47,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         buildRecycler()
-        startDataObserver()
-        setupRefresh()
+        viewModel.startDataObserver()
     }
 
     private fun buildRecycler() {
-        recyclerAdapter = RecyclerAdapter() { id ->
-            viewModel.removeElement(id)
-        }.apply {
-            data = viewModel.elements.replayCache.let {
-                if (it.isEmpty())
-                    listOf()
-                else
-                    it.last()
-            }
-        }
-        val recyclerLayoutManager = GridLayoutManager(
-            this@MainActivity,
-            resources.getInteger(R.integer.elements_columns)
-        )
         binding?.recycler?.apply {
-            adapter = recyclerAdapter
+            adapter = viewModel.adapter
             layoutManager = recyclerLayoutManager
             addItemDecoration(RecyclerItemDecoration(bottomOffset = 16, rightOffset = 8, leftOffset = 8))
             addItemDecoration(DividerItemDecoration(this@MainActivity, recyclerLayoutManager.orientation))
             itemAnimator = RecyclerAnimator()
-        }
-    }
-
-    private fun startDataObserver() {
-        scope.launch(Dispatchers.Default) {
-            viewModel.elements.collect {
-                withContext(Dispatchers.Main) {
-                    updateRecyclerData(it)
-                }
-            }
-        }
-    }
-
-    private fun setupRefresh() {
-        binding?.refresh?.run {
-            setOnRefreshListener {
-         //       updateRecyclerData(viewModel.elements.)
-                isRefreshing = false
-            }
-        }
-    }
-
-    private fun updateRecyclerData(elements: List<Element>) {
-        Log.d("ACTIVITY", "new data: $elements")
-        recyclerAdapter?.apply {
-            data = elements
         }
     }
 }

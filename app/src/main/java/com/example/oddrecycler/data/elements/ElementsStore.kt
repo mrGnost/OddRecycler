@@ -27,6 +27,7 @@ class ElementsStore @Inject constructor(
         get() = _elements
 
     init {
+        Log.d("ELEMENTS_STORE", "Store Created")
         externalScope.launch(dispatcher.default) {
             startGenerator()
         }
