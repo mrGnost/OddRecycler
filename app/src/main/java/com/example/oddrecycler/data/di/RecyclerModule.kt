@@ -2,7 +2,6 @@ package com.example.oddrecycler.data.di
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.oddrecycler.R
 import dagger.Module
 import dagger.Provides

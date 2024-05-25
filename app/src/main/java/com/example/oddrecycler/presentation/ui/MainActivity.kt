@@ -10,20 +10,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.oddrecycler.data.entity.Element
 import com.example.oddrecycler.presentation.viewmodel.ElementsViewModel
 import com.example.oddrecycler.R
-import com.example.oddrecycler.presentation.adapter.RecyclerAdapter
 import com.example.oddrecycler.presentation.util.RecyclerAnimator
 import com.example.oddrecycler.presentation.util.RecyclerItemDecoration
 import com.example.oddrecycler.databinding.ActivityMainBinding
 import com.example.oddrecycler.util.Dispatcher
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
