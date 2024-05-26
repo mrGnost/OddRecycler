@@ -1,7 +1,7 @@
 package com.example.oddrecycler.data.elements
 
 import android.util.Log
-import com.example.oddrecycler.data.entity.Element
+import com.example.oddrecycler.data.entity.ElementDataObject
 import com.example.oddrecycler.util.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -18,16 +18,15 @@ class ElementsStore @Inject constructor(
     externalScope: CoroutineScope,
     dispatcher: Dispatcher
 ) {
-    private val data = mutableListOf<Element>()
+    private val data = mutableListOf<ElementDataObject>()
     private val mutex = Mutex()
 
-    private val _elements = MutableSharedFlow<List<Element>>()
+    private val _elements = MutableSharedFlow<List<ElementDataObject>>()
 
-    val elements: SharedFlow<List<Element>>
+    val elements: SharedFlow<List<ElementDataObject>>
         get() = _elements
 
     init {
-        Log.d("ELEMENTS_STORE", "Store Created")
         externalScope.launch(dispatcher.default) {
             startGenerator()
         }
@@ -41,7 +40,6 @@ class ElementsStore @Inject constructor(
                         (0..size).random(),
                         element = ElementStorage.get() ?: ElementGenerator.next()
                     )
-                    Log.d("ELEMENTS_STORE", "New data: $this")
                 })
             }
             delay(5000)
@@ -51,7 +49,6 @@ class ElementsStore @Inject constructor(
     suspend fun removeAt(id: Int) {
         mutex.withLock {
             data.apply {
-                Log.d("ELEMENTS_STORE", "data: $this, removing: $id")
                 indexOfFirst { element ->
                     element.id == id
                 }.let { index ->
