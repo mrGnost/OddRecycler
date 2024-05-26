@@ -8,8 +8,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ElementsRepositoryImpl @Inject constructor(
-    val dispatcher: Dispatcher,
-    val store: ElementsStore
+    private val dispatcher: Dispatcher,
+    private val store: ElementsStore
 ) : ElementsRepository {
     override fun getElements() = store.elements.toElementsFlow()
 

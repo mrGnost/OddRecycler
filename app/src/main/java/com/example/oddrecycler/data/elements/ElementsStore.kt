@@ -27,7 +27,6 @@ class ElementsStore @Inject constructor(
         get() = _elements
 
     init {
-        Log.d("ELEMENTS_STORE", "Store Created")
         externalScope.launch(dispatcher.default) {
             startGenerator()
         }
@@ -41,7 +40,6 @@ class ElementsStore @Inject constructor(
                         (0..size).random(),
                         element = ElementStorage.get() ?: ElementGenerator.next()
                     )
-                    Log.d("ELEMENTS_STORE", "New data: $this")
                 })
             }
             delay(5000)
@@ -51,7 +49,6 @@ class ElementsStore @Inject constructor(
     suspend fun removeAt(id: Int) {
         mutex.withLock {
             data.apply {
-                Log.d("ELEMENTS_STORE", "data: $this, removing: $id")
                 indexOfFirst { element ->
                     element.id == id
                 }.let { index ->

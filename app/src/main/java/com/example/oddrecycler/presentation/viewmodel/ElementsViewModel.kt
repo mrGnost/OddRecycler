@@ -46,7 +46,6 @@ class ElementsViewModel @Inject constructor(
     }
 
     private fun updateRecyclerData(elements: List<Element>) {
-        Log.d("ACTIVITY", "new data: $elements")
         adapter.apply {
             data = elements
         }
