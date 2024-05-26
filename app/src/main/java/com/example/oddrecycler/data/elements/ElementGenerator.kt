@@ -1,9 +1,9 @@
 package com.example.oddrecycler.data.elements
 
-import com.example.oddrecycler.data.entity.Element
+import com.example.oddrecycler.data.entity.ElementDataObject
 
 object ElementGenerator {
     private var counter = 0
 
-    fun next() = Element(counter++)
+    fun next() = ElementDataObject(counter++)
 }

@@ -1,7 +1,6 @@
 package com.example.oddrecycler.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.oddrecycler.presentation.viewmodel.ElementsViewModel
 import com.example.oddrecycler.R
 import com.example.oddrecycler.presentation.util.RecyclerAnimator
@@ -29,28 +27,48 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var recyclerLayoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("MAIN_ACTIVITY", "Activity created")
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        findViewById<RecyclerView>(R.id.recycler)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+
+        setupView()
+        buildRecycler()
+        viewModel.startDataObserver()
+    }
+
+    private fun setupView() {
+        enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        buildRecycler()
-        viewModel.startDataObserver()
     }
 
     private fun buildRecycler() {
         binding?.recycler?.apply {
             adapter = viewModel.adapter
             layoutManager = recyclerLayoutManager
-            addItemDecoration(RecyclerItemDecoration(bottomOffset = 16, rightOffset = 8, leftOffset = 8))
-            addItemDecoration(DividerItemDecoration(this@MainActivity, recyclerLayoutManager.orientation))
+            addItemDecoration(
+                RecyclerItemDecoration(
+                    bottomOffset = 16,
+                    rightOffset = 8,
+                    leftOffset = 8
+                )
+            )
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@MainActivity,
+                    recyclerLayoutManager.orientation
+                )
+            )
             itemAnimator = RecyclerAnimator()
         }
+    }
+
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
     }
 }
