@@ -53,4 +53,9 @@ class MainActivity : AppCompatActivity() {
             itemAnimator = RecyclerAnimator()
         }
     }
+
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
+    }
 }

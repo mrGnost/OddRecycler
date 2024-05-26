@@ -1,7 +1,7 @@
 package com.example.oddrecycler.data.elements
 
 import android.util.Log
-import com.example.oddrecycler.data.entity.Element
+import com.example.oddrecycler.data.entity.ElementDataObject
 import com.example.oddrecycler.util.Dispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -18,12 +18,12 @@ class ElementsStore @Inject constructor(
     externalScope: CoroutineScope,
     dispatcher: Dispatcher
 ) {
-    private val data = mutableListOf<Element>()
+    private val data = mutableListOf<ElementDataObject>()
     private val mutex = Mutex()
 
-    private val _elements = MutableSharedFlow<List<Element>>()
+    private val _elements = MutableSharedFlow<List<ElementDataObject>>()
 
-    val elements: SharedFlow<List<Element>>
+    val elements: SharedFlow<List<ElementDataObject>>
         get() = _elements
 
     init {

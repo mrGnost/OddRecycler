@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.oddrecycler.data.entity.Element
 import com.example.oddrecycler.R
+import com.example.oddrecycler.domain.entity.Element
 import com.example.oddrecycler.presentation.util.RecyclerDiffCallback
 import com.google.android.material.card.MaterialCardView
 
